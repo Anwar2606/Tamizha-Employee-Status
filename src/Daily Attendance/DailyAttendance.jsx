@@ -19,7 +19,7 @@ const DailyAttendance = () => {
     return today.toISOString().split("T")[0];
   });
   const [timeInputs, setTimeInputs] = useState({});
-  const [savedAttendance, setSavedAttendance] = useState({}); // Track saved employees
+  const [savedAttendance, setSavedAttendance] = useState({});
 
   useEffect(() => {
     fetchEmployees();
@@ -50,7 +50,7 @@ const DailyAttendance = () => {
 
         return {
           ...emp,
-          status: snap.exists() ? snap.data().status : "Absent",
+          status: snap.exists() ? snap.data().status : "", // Default to empty string
           entryTime: snap.exists() ? snap.data().entryTime || "" : "",
           leavingTime: snap.exists() ? snap.data().leavingTime || "" : "",
         };
@@ -59,33 +59,24 @@ const DailyAttendance = () => {
 
     setEmployees(updatedEmployees);
 
-    // Prepare time inputs
     const inputs = {};
+    const saved = {};
     updatedEmployees.forEach((emp) => {
       inputs[emp.id] = {
         entryTime: emp.entryTime,
         leavingTime: emp.leavingTime,
       };
-    });
-    setTimeInputs(inputs);
-
-    // Mark saved employees (attendance data exists)
-    const saved = {};
-    updatedEmployees.forEach((emp) => {
       if (emp.status) {
-        // If attendance doc exists, mark as saved
-        // You could be more specific by checking if document exists from Firestore
         saved[emp.id] = true;
       }
     });
+
+    setTimeInputs(inputs);
     setSavedAttendance(saved);
   };
 
   const handleAttendanceChange = async (id, name, status) => {
-    if (savedAttendance[id]) {
-      // If already saved, do nothing
-      return;
-    }
+    if (savedAttendance[id]) return;
 
     const formattedDate = selectedDate.split("-").reverse().join("-");
     const docId = `${id}_${formattedDate}`;
@@ -94,18 +85,18 @@ const DailyAttendance = () => {
     let entryTime = "";
     let leavingTime = "";
 
-    if (status !== "Absent") {
+    if (status !== "Absent" && status !== "") {
       const existing = await getDoc(ref);
       entryTime = existing.exists()
         ? existing.data().entryTime || new Date().toLocaleTimeString("en-IN", { hour12: false }).slice(0, 5)
         : new Date().toLocaleTimeString("en-IN", { hour12: false }).slice(0, 5);
       leavingTime = existing.exists() ? existing.data().leavingTime || "" : "";
-    } else {
-      setTimeInputs((prev) => ({
-        ...prev,
-        [id]: { entryTime: "", leavingTime: "" },
-      }));
     }
+
+    setTimeInputs((prev) => ({
+      ...prev,
+      [id]: { entryTime, leavingTime },
+    }));
 
     const data = {
       employeeId: id,
@@ -126,7 +117,7 @@ const DailyAttendance = () => {
   };
 
   const handleTimeChange = (id, field, value) => {
-    if (savedAttendance[id]) return; // Prevent change if saved
+    if (savedAttendance[id]) return;
 
     setTimeInputs((prev) => ({
       ...prev,
@@ -138,7 +129,7 @@ const DailyAttendance = () => {
   };
 
   const handleManualTimeSave = async (id, name) => {
-    if (savedAttendance[id]) return; // Prevent saving again
+    if (savedAttendance[id]) return;
 
     const formattedDate = selectedDate.split("-").reverse().join("-");
     const docId = `${id}_${formattedDate}`;
@@ -163,7 +154,7 @@ const DailyAttendance = () => {
 
     setSavedAttendance((prev) => ({
       ...prev,
-      [id]: true, // Mark as saved
+      [id]: true,
     }));
 
     toast.success(`Attendance saved for ${name}`);
@@ -180,12 +171,11 @@ const DailyAttendance = () => {
         <div className="attendance-widgets">
           <div className="attendance-widget">
             <h4>Today Date</h4>
-           <input
-  type="date"
-  value={new Date().toISOString().split("T")[0]}  // always current date
-  disabled
-/>
-
+            <input
+              type="date"
+              value={new Date().toISOString().split("T")[0]}
+              disabled
+            />
           </div>
         </div>
 
@@ -197,7 +187,6 @@ const DailyAttendance = () => {
                 <th>Name</th>
                 <th>Employment Type</th>
                 <th>Attendance</th>
-                
                 <th>Entry Time</th>
                 <th>Leaving Time</th>
                 <th>Action</th>
@@ -206,23 +195,23 @@ const DailyAttendance = () => {
             <tbody>
               {employees.map((emp) => (
                 <tr key={emp.id}>
-                   <td>{selectedDate.split("-").reverse().join("-")}</td>
+                  <td>{selectedDate.split("-").reverse().join("-")}</td>
                   <td>{emp.name}</td>
                   <td>{emp.employmentType}</td>
                   <td>
                     <select
-                      value={emp.status}
+                      value={emp.status || ""}
                       onChange={(e) =>
                         handleAttendanceChange(emp.id, emp.name, e.target.value)
                       }
                       disabled={savedAttendance[emp.id]}
                     >
+                      <option value="">-- Select Status --</option>
                       <option value="Present">Present</option>
                       <option value="Absent">Absent</option>
                       <option value="Half Day">Half Day</option>
                     </select>
                   </td>
-                 
                   <td>
                     <input
                       type="time"
@@ -230,7 +219,11 @@ const DailyAttendance = () => {
                       onChange={(e) =>
                         handleTimeChange(emp.id, "entryTime", e.target.value)
                       }
-                      disabled={emp.status === "Absent" || savedAttendance[emp.id]}
+                      disabled={
+                        emp.status === "Absent" ||
+                        emp.status === "" ||
+                        savedAttendance[emp.id]
+                      }
                     />
                   </td>
                   <td>
@@ -240,7 +233,11 @@ const DailyAttendance = () => {
                       onChange={(e) =>
                         handleTimeChange(emp.id, "leavingTime", e.target.value)
                       }
-                      disabled={emp.status === "Absent" || savedAttendance[emp.id]}
+                      disabled={
+                        emp.status === "Absent" ||
+                        emp.status === "" ||
+                        savedAttendance[emp.id]
+                      }
                     />
                   </td>
                   <td>
