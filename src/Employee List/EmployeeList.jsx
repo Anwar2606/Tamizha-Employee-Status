@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+
+
 import Sidebar from "../Sidebar/Sidebar";
 import "./EmployeeList.css";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +28,15 @@ const EmployeeList = () => {
   const handleAddEmployee = () => {
     navigate("/add-employee");
   };
+const handleDelete = async (id) => {
+  if (window.confirm("Are you sure you want to delete this employee?")) {
+    try {
+      await deleteDoc(doc(db, "employees", id));
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+    }
+  }
+};
 
   const handleEdit = (id) => {
     navigate(`/edit-employee/${id}`);
@@ -80,14 +91,22 @@ const EmployeeList = () => {
                       <td>{employee.address}</td>
                       <td>{employee.entryTime || "-"}</td>
                       <td>{employee.leavingTime || "-"}</td>
-                      <td>
-                        <button
-                          onClick={() => handleEdit(employee.id)}
-                          className="edit-btn"
-                        >
-                          Edit
-                        </button>
-                      </td>
+                     <td>
+  <button
+    onClick={() => handleEdit(employee.id)}
+    className="edit-btn"
+  >
+    Edit
+  </button>
+  <button
+    onClick={() => handleDelete(employee.id)}
+    className="delete-btn"
+  >
+    Delete
+  </button>
+</td>
+
+                      
                     </tr>
                   ))}
                 </tbody>

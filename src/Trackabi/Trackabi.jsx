@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import './Trackabi.css'; // make sure this matches your CSS filename
+import './Trackabi.css';
 import {
   collection,
   getDocs,
@@ -33,6 +33,8 @@ const Trackabi = () => {
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
+      status: "", // Initial empty status
+      isDisabled: false, // Initially enabled
     }));
     setEmployees(data);
   };
@@ -46,7 +48,8 @@ const Trackabi = () => {
         const snap = await getDoc(clickupRef);
         return {
           ...emp,
-          status: snap.exists() ? snap.data().status : "no",
+          status: snap.exists() ? snap.data().status : "",
+          isDisabled: snap.exists(), // Disable if status already saved
         };
       })
     );
@@ -69,7 +72,9 @@ const Trackabi = () => {
 
       setEmployees((prev) =>
         prev.map((emp) =>
-          emp.id === id ? { ...emp, status: value ? "yes" : "no" } : emp
+          emp.id === id
+            ? { ...emp, status: value ? "yes" : "no", isDisabled: true }
+            : emp
         )
       );
     } catch (error) {
@@ -80,16 +85,17 @@ const Trackabi = () => {
   };
 
   const totalCompleted = employees.filter((emp) => emp.status === "yes").length;
-  const totalIncomplete = employees.length - totalCompleted;
+  const totalIncomplete = employees.filter((emp) => emp.status === "no").length;
+
   return (
     <div className="clickup-container">
       <div className="clickup-sidebar">
         <Sidebar />
       </div>
-  
+
       <div className="clickup-main">
         <h2 className="clickup-heading">Employee Trackabi Status</h2>
-  
+
         <div className="clickup-widgets">
           <div className="clickup-widget">
             <h4>Total Employees</h4>
@@ -108,24 +114,19 @@ const Trackabi = () => {
             <input
   type="date"
   value={selectedDate}
-  onChange={(e) => {
-    if (!selectedDate) {
-      setSelectedDate(e.target.value);
-    }
-  }}
-  disabled={!!selectedDate}
+  disabled
 />
+
           </div>
           <div className="clickup-widget clickup-logo-widget">
-          
             <img
               src="https://trackabi.com/img/front/press-kit/Trackabi-Logo-Square.svg"
-              alt="Trackabi Logo"
+              alt="ClickUp Logo"
               style={{ width: "100px", marginTop: "10px" }}
             />
           </div>
         </div>
-  
+
         <table className="clickup-table">
           <thead>
             <tr>
@@ -141,21 +142,21 @@ const Trackabi = () => {
                 <td>{emp.name}</td>
                 <td>{emp.designation}</td>
                 <td>
-                  <label>
-                  <input
-  type="checkbox"
-  className="clickup-checkbox"
-  checked={emp.status === "yes"}
-  disabled={emp.status === "yes"} // disable if already checked
-  onChange={(e) =>
-    handleCheckboxChange(emp.id, e.target.checked)
-  }
-/>
-
-                    {saving === emp.id && (
-                      <span className="clickup-saving-text">Saving...</span>
-                    )}
-                  </label>
+                  <select
+                    value={emp.status}
+                    onChange={(e) =>
+                      handleCheckboxChange(emp.id, e.target.value === "yes")
+                    }
+                    disabled={saving === emp.id || emp.isDisabled}
+                    className="clickup-dropdown"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="yes">Completed</option>
+                    <option value="no">Incomplete</option>
+                  </select>
+                  {saving === emp.id && (
+                    <span className="clickup-saving-text">Saving...</span>
+                  )}
                 </td>
                 <td>{selectedDate.split("-").reverse().join("-")}</td>
               </tr>
@@ -165,7 +166,6 @@ const Trackabi = () => {
       </div>
     </div>
   );
-  
 };
 
 export default Trackabi;

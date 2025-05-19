@@ -9,7 +9,20 @@
     background-repeat: no-repeat;
     background-position: center;
   }
-  
+  .clickup-dropdown {
+  padding: 5px 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.clickup-saving-text {
+  font-size: 12px;
+  color: orange;
+  margin-left: 8px;
+}
+
   .clickup-sidebar {
     width: 200px;
   }

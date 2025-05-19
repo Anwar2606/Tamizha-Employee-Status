@@ -5,18 +5,37 @@
     display: flex;
     justify-content: center;
 }
-.edit-btn {
-  background-color: #009cec;      /* Green background */
-  color: white;                   /* White text */
-  border: none;                   /* No border */
-  padding: 8px 16px;              /* Some padding */
-  font-size: 14px;                /* Font size */
-  font-weight: 600;               /* Slightly bold */
-  border-radius: 5px;             /* Rounded corners */
-  cursor: pointer;                /* Pointer on hover */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+
+/* EmployeeList.css */
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
 }
+
+.edit-btn {
+  background-color: #4caf50; /* green */
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336; /* red */
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
+}
+
 
 .edit-btn:hover {
   background-color: #009cec;      /* Darker green on hover */
@@ -31,7 +50,7 @@
 
 /* Stylish Table */
 .custom-table {
-    width: 100%;
+    width: 120%;
     max-width: 1000px; /* Limits table width for better aesthetics */
     border-collapse: collapse;
     border-radius: 10px;
