@@ -41,6 +41,10 @@ const handleDelete = async (id) => {
   const handleEdit = (id) => {
     navigate(`/edit-employee/${id}`);
   };
+const handleShowProfile = (id) => {
+  navigate(`/employee-profile/${id}`);
+};
+
 
   return (
     <div className="main-container">
@@ -67,12 +71,10 @@ const handleDelete = async (id) => {
                   <tr>
                     <th>S.no</th>
                     <th>Name</th>
-                    <th>Designation</th>
                     <th>Blood</th>
                     <th>DOB</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Address</th>
                     <th>Entry Time</th>
                     <th>Leave Time</th>
                     <th>Action</th>
@@ -83,28 +85,27 @@ const handleDelete = async (id) => {
                     <tr key={employee.id}>
                       <td>{index + 1}</td>
                       <td>{employee.name}</td>
-                      <td>{employee.designation}</td>
                       <td>{employee.bloodGroup}</td>
                       <td>{employee.dob}</td>
                       <td>{employee.email}</td>
                       <td>{employee.phone}</td>
-                      <td>{employee.address}</td>
                       <td>{employee.entryTime || "-"}</td>
                       <td>{employee.leavingTime || "-"}</td>
-                     <td>
-  <button
-    onClick={() => handleEdit(employee.id)}
-    className="edit-btn"
-  >
-    Edit
-  </button>
-  <button
-    onClick={() => handleDelete(employee.id)}
-    className="delete-btn"
-  >
-    Delete
-  </button>
+                <td>
+  <div className="action-buttons">
+    <button onClick={() => handleShowProfile(employee.id)} className="profile-btn">
+      Show Profile
+    </button>
+    <button onClick={() => handleEdit(employee.id)} className="edit-btn">
+      Edit
+    </button>
+    <button onClick={() => handleDelete(employee.id)} className="delete-btn">
+      Delete
+    </button>
+  </div>
 </td>
+
+
 
                       
                     </tr>

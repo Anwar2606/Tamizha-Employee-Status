@@ -12,6 +12,8 @@ import Workdone from "./Workdone/Workdone.jsx";
 import Attendance from "./Attendance/Attendance.jsx";
 import DailyAttendance from "./Daily Attendance/DailyAttendance.jsx";
 import EditEmployee from "./Edit Employee/EditEmployee.jsx";
+import EmployeeProfile from "./Employee Profile/EmployeeProfile.jsx";
+import AttendanceReport from "./Attedance Report/AttendanceReport.jsx";
 
 
 function App() {
@@ -48,12 +50,19 @@ function App() {
         <Route path="/attendance" element={<Attendance />} />
       </Routes>
       <Routes>
+        <Route path="/employee-profile/:id" element={<EmployeeProfile />} />
+      </Routes>
+      <Routes>
         <Route path="/dailyattendance" element={<DailyAttendance />} />
+      </Routes>
+       <Routes>
+        <Route path="/attendancereport" element={<AttendanceReport />} />
       </Routes>
       <Routes>
           <Route path="/edit-employee/:id" element={<EditEmployee />} />
 
       </Routes>
+      
     </Router>
   );
 }
