@@ -149,13 +149,13 @@ const Dashboard = () => {
   ).length;
 
   const cardData = [
-    {
-      id: 1,
-      title: "Click Up",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJrSxyKnMBdmFOrMr6qTrkGwWB0rP5oa2V0w&s",
-      completed: clickupYesCount,
-      incomplete: clickupNoCount,
-    },
+    // {
+    //   id: 1,
+    //   title: "Click Up",
+    //   imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJrSxyKnMBdmFOrMr6qTrkGwWB0rP5oa2V0w&s",
+    //   completed: clickupYesCount,
+    //   incomplete: clickupNoCount,
+    // },
     {
       id: 2,
       title: "Trackabi Timer",

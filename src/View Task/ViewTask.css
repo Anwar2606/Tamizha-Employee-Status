@@ -1,0 +1,5 @@
+/* Add this CSS in your stylesheet */
+.completed-task {
+  text-decoration: line-through;
+  color: gray; /* Optional: makes it look disabled */
+}

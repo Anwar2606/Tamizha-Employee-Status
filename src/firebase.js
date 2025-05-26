@@ -5,12 +5,12 @@ import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   //main db
-  apiKey: "AIzaSyDGeTS_b0SPSNtX6uSqguJx-cOJ4ndkVh0",
-  authDomain: "tamizha-task-allocation-status.firebaseapp.com",
-  projectId: "tamizha-task-allocation-status",
-  storageBucket: "tamizha-task-allocation-status.firebasestorage.app",
-  messagingSenderId: "306038736104",
-  appId: "1:306038736104:web:af188eda094a4caaa0b55d"
+  apiKey: "AIzaSyBxQAkiIFp5EIs06V9MtjIA97gWGsMKTEk",
+  authDomain: "infeara-employee-status.firebaseapp.com",
+  projectId: "infeara-employee-status",
+  storageBucket: "infeara-employee-status.firebasestorage.app",
+  messagingSenderId: "849542560944",
+  appId: "1:849542560944:web:79024c39a53a34b5e80f75"
 };
 
 const app = initializeApp(firebaseConfig);

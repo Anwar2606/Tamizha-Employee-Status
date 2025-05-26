@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css"; // Bootstrap Import
-import companyLogo from "../assets/Tss-logo.png";
+import companyLogo from "../assets/infeara-logo.png";
 import bgImage from "../assets/login-background.jpg";
 
 const Login = () => {
@@ -38,7 +38,7 @@ const Login = () => {
       <div className="card shadow-lg p-4 bg-white bg-opacity-90" style={{ maxWidth: "400px", width: "100%" }}>
          {/* Company Logo */}
          <div className="text-center mb-3">
-          <img src={companyLogo} alt="Company Logo" style={{ width: "120px" }} />
+          <img src={companyLogo} alt="Company Logo" style={{ width: "150px" }} />
         </div>
         <h2 className="text-center fw-bold text-dark">Login</h2>
         <form onSubmit={handleLogin} className="mt-3">

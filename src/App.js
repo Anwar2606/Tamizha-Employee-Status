@@ -14,6 +14,9 @@ import DailyAttendance from "./Daily Attendance/DailyAttendance.jsx";
 import EditEmployee from "./Edit Employee/EditEmployee.jsx";
 import EmployeeProfile from "./Employee Profile/EmployeeProfile.jsx";
 import AttendanceReport from "./Attedance Report/AttendanceReport.jsx";
+import ViewTask from "./View Task/ViewTask.jsx";
+import DMViewClient from "./DM Clients/DMClients.jsx";
+import WebsiteClients from "./Website Clients/WebsiteClients.jsx";
 
 
 function App() {
@@ -45,6 +48,15 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/workdone" element={<Workdone />} />
+      </Routes>
+       <Routes>
+        <Route path="/view-task" element={<ViewTask />} />
+      </Routes>
+      <Routes>
+        <Route path="/dm-clients" element={<DMViewClient />} />
+      </Routes>
+       <Routes>
+        <Route path="/website-clients" element={<WebsiteClients />} />
       </Routes>
       <Routes>
         <Route path="/attendance" element={<Attendance />} />
